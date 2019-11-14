@@ -1,6 +1,11 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 
+let role = "";
+let name = "";
+let officeNumber = "";
+let github = "";
+
 function promptUser(){
     return inquirer.prompt([
         
@@ -17,7 +22,9 @@ function promptUser(){
             choices: ["Manager", "Intern", "Engineer"]
           },
 
-       ]).then(function({role}){
+       ])}
+
+       function promptUser2(role, officeNumber){
 
         if (role === "Engineer"){
             return inquirer.prompt([
@@ -35,20 +42,26 @@ function promptUser(){
                     message: "Enter the school you are currently enrolled in:"
                 }
             ])
-        } else if (role === "Intern"){
+        } else if (role === "Manager"){
             return inquirer.prompt([
                 {
                     type: "input",
-                    name: "school",
-                    message: "Enter the school you are currently enrolled in:"
+                    name: "officeNumber",
+                    message: "Enter your office number:"
                 }
+                
             ])
-            
+
         } else {
             console.log("no role found")
         }
+    }
 
-        console.log(role)
-       })};
+        
+    //    }).then(function ({role, name, officeNumber}){
+    //        console.log(role, name, officeNumber);
+    //    })};
+
 
        promptUser();
+       promptUser2();
