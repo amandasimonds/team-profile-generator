@@ -17,9 +17,7 @@ function promptUser(){
             choices: ["Manager", "Intern", "Engineer"]
           },
 
-          
-
-       ]).then(function(role){
+       ]).then(function({role}){
 
         if (role === "Engineer"){
             return inquirer.prompt([
@@ -29,7 +27,7 @@ function promptUser(){
                     message: "What is your github link?",
                 }
             ])
-        } else if (role == "intern"){
+        } else if (role === "Intern"){
             return inquirer.prompt([
                 {
                     type: "input",
@@ -37,11 +35,20 @@ function promptUser(){
                     message: "Enter the school you are currently enrolled in:"
                 }
             ])
+        } else if (role === "Intern"){
+            return inquirer.prompt([
+                {
+                    type: "input",
+                    name: "school",
+                    message: "Enter the school you are currently enrolled in:"
+                }
+            ])
+            
         } else {
             console.log("no role found")
         }
 
-        console.log(this.role)
+        console.log(role)
        })};
 
        promptUser();
