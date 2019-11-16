@@ -1,10 +1,8 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
+// const Engineer = require("./engineerclass");
 
-let role = "";
-let name = "";
-let officeNumber = "";
-let github = "";
+let user;
 
 function promptUser(){
     return inquirer.prompt([
@@ -22,9 +20,7 @@ function promptUser(){
             choices: ["Manager", "Intern", "Engineer"]
           },
 
-       ])}
-
-       function promptUser2(role, officeNumber){
+       ]).then(function({role, name}){
 
         if (role === "Engineer"){
             return inquirer.prompt([
@@ -33,7 +29,9 @@ function promptUser(){
                     name: "github",
                     message: "What is your github link?",
                 }
-            ])
+            ]).then(function({github}){
+                user = new Engineer ()
+            })
         } else if (role === "Intern"){
             return inquirer.prompt([
                 {
@@ -55,13 +53,23 @@ function promptUser(){
         } else {
             console.log("no role found")
         }
-    }
 
+        //generate team html
+        fs.writeFile("team.html", htmlgen(role, name, github), function(err) {
+            
+            if (err) {
+              return console.log(err);
+            }
+          
+            console.log("Success!");
         
-    //    }).then(function ({role, name, officeNumber}){
-    //        console.log(role, name, officeNumber);
-    //    })};
+          })
 
+       })
+
+    //    .then(function ({role, name, officeNumber}){
+    //        console.log(role, name, officeNumber);
+    //    })
+    };
 
        promptUser();
-       promptUser2();
