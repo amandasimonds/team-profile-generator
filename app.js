@@ -67,7 +67,6 @@ function newManager() {
         .then(function(data) {
             let manager = new Manager(data.name, data.id, data.email, data.officeNumber);
             employeeList.push(manager);
-            console.log(manager)
                 addToFile("team.html", generateHTML.addManagerCard(data));
                 addAnother();
         });
@@ -106,8 +105,6 @@ function newEngineer() {
         .then(function(data) {
             let engineer = new Engineer(data.name, data.id, data.email, data.github);
             employeeList.push(engineer);
-            console.log(engineer)
-            console.log(employeeList)
             addToFile("team.html", generateHTML.addEngineerCard(data));
             addAnother();
         });
@@ -146,8 +143,6 @@ function newIntern() {
         .then(function(data) {
             let intern = new Intern(data.name, data.id, data.title, data.email, data.school);
             employeeList.push(intern);
-            console.log(employeeList);
-            console.log(intern)
             addToFile("team.html", generateHTML.addInternCard(data));
             addAnother();
         });
