@@ -168,7 +168,7 @@ function addAnother() {
         if(data.addAnother === "Yes") {
             addEmployee();
         }else{
-            populateData();
+            finish();
         }
     });
 } 
@@ -189,25 +189,12 @@ function addToFile (html, data) {
     });
 }
 
-function populateData() {
-    console.log("populating data")
-    employeeList.forEach(function (data) {
-        switch (data.role) {
-            case "Intern":
-                addToFile("team.html", generateHTML.addInternCard(data));
-              break;
-            case "Engineer":
-                addToFile("team.html", generateHTML.addEngineerCard(data));
-              break;
-            default:
-              break;
-        }
-    });
+function finish() {
+    console.log("Team profile ready! filename: team.html")
 };
 
 function closeFile(){
     addToFile("team.html", generateHTML.closeHTML());
 }
-
 
 profileGen();
