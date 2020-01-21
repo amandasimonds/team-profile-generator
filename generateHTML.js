@@ -44,7 +44,7 @@ var generateHTML = {
             <ul class="list-group">
                 <li class="list-group-item">ID#: ${data.id}</li>
                 <li class="list-group-item">Email: <a href="mailto:${data.email}">${data.email}</a></li>
-                <li class="list-group-item">Github: <a href="github.com/ ${data.github}">github.com/amandasimonds</a></li>
+                <li class="list-group-item">Github: <a href="github.com/ ${data.github}">github.com/${data.github}</a></li>
             </ul>
         </div>
      </div>`
