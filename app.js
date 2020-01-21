@@ -15,7 +15,7 @@ function profileGen() {
     newManager();      
 }
 
-function getRole() {
+function addEmployee() {
     inquirer
         .prompt([
             {
@@ -39,41 +39,37 @@ function newManager() {
         .prompt([
             {
                 type: "list",
-                name: "employeeTitle",
+                name: "title",
                 message: "Please verify the employee's title:",
                 choices: ["Manager"]
             },
             {
                 type: "input",
-                name: "employeeName",
+                name: "name",
                 message: "What is the manager's name?"
             },
             {
                 type: "input",
-                name: "employeeID",
+                name: "id",
                 message: "What is the manager's ID number?"
             },
             {
                 type: "input",
-                name: "employeeEmail",
+                name: "email",
                 message: "What is the manager's email address?"
             },
             {
                 type: "input",
-                name: "managerOfficeNumber",
+                name: "officeNumber",
                 message: "What is the manager's office number?"
             }
         ])
         .then(function(data) {
-            let manager = new Manager(data.employeeName, data.employeeID, data.employeeTitle, data.employeeEmail, data.managerOfficeNumber);
-
+            let manager = new Manager(data.name, data.id, data.title, data.email, data.officeNumber);
             employeeList.push(manager);
-            employeeList.forEach(function (data) {
+            console.log(manager)
                 addToFile("team.html", generateHTML.addManagerCard(data));
-                console.log(manager)
                 addAnother();
-            });
-            
         });
 }
 
@@ -82,37 +78,38 @@ function newEngineer() {
         .prompt([
             {
                 type: "list",
-                name: "employeeTitle",
+                name: "title",
                 message: "Please verify the employee's title:",
                 choices: ["Engineer"]
             },
             {
                 type: "input",
-                name: "employeeName",
+                name: "name",
                 message: "Please enter the new engineer's name."
             },
             {
                 type: "input",
-                name: "employeeID",
+                name: "id",
                 message: "Please enter the new engineer's ID number."
             },
             {
                 type: "input",
-                name: "employeeEmail",
+                name: "email",
                 message: "Please enter the new engineer's ID email address."
             },
             {
                 type: "input",
-                name: "engineerGitHub",
+                name: "github",
                 message: "Please enter the new engineer's GitHub username."
             }
         ])
         .then(function(data) {
-            let engineer = new Engineer(data.employeeName, data.employeeID, data.employeeTitle, data.employeeEmail, data.engineerGitHub);
+            let engineer = new Engineer(data.name, data.id, data.title, data.email, data.github);
 
             employeeList.push(engineer);
             console.log(engineer)
             console.log(employeeList)
+            addToFile("team.html", generateHTML.addEngineerCard(data));
             addAnother();
         });
 }
@@ -122,37 +119,37 @@ function newIntern() {
         .prompt([
             {
                 type: "list",
-                name: "employeeTitle",
+                name: "title",
                 message: "Please verify the employee's title:",
                 choices: ["Intern"]
             },
             {
                 type: "input",
-                name: "employeeName",
+                name: "name",
                 message: "Please enter the new intern's name."
             },
             {
                 type: "input",
-                name: "employeeID",
+                name: "id",
                 message: "Please enter the new intern's ID number."
             },
             {
                 type: "input",
-                name: "employeeEmail",
+                name: "email",
                 message: "Please enter the new intern's ID email address."
             },
             {
                 type: "input",
-                name: "internSchool",
+                name: "school",
                 message: "Please enter the new intern's school."
             }
         ])
         .then(function(data) {
-            let intern = new Intern(data.employeeName, data.employeeID, data.employeeTitle, data.employeeEmail, data.internSchool);
-
+            let intern = new Intern(data.name, data.id, data.title, data.email, data.school);
             employeeList.push(intern);
             console.log(employeeList);
             console.log(intern)
+            addToFile("team.html", generateHTML.addInternCard(data));
             addAnother();
         });
 }
@@ -169,9 +166,8 @@ function addAnother() {
     ])
     .then(function(data) {
         if(data.addAnother === "Yes") {
-            getRole();
+            addEmployee();
         }else{
-            
             populateData();
         }
     });
