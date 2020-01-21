@@ -1,75 +1,217 @@
 const inquirer = require("inquirer");
+const generateHTML = require("./generateHTML");
+const Manager = require("./lib/employee");
+const Engineer = require("./lib/engineer");
+const Intern = require("./lib/intern");
+const Employee = require("./lib/employee");
 const fs = require("fs");
-// const Engineer = require("./engineerclass");
 
-let user;
+const employeeList = [];
 
-function promptUser(){
-    return inquirer.prompt([
-        
-          {
-            type: "input",
-            name: "name",
-            message: "What is your name?"
-          },
 
-          {
-            type: "list",
-            name: "role",
-            message: "What is your role?",
-            choices: ["Manager", "Intern", "Engineer"]
-          },
+function profileGen() {
+    console.log("Welcome to the Team Profile Generator. First enter your manager. Then you will enter your employees.");
+    createFile("team.html", generateHTML.generateHTML());
+    newManager();      
+}
 
-       ]).then(function({role, name}){
-
-        if (role === "Engineer"){
-            return inquirer.prompt([
-                {
-                    type: "input",
-                    name: "github",
-                    message: "What is your github link?",
-                }
-            ]).then(function({github}){
-                user = new Engineer ()
-            })
-        } else if (role === "Intern"){
-            return inquirer.prompt([
-                {
-                    type: "input",
-                    name: "school",
-                    message: "Enter the school you are currently enrolled in:"
-                }
-            ])
-        } else if (role === "Manager"){
-            return inquirer.prompt([
-                {
-                    type: "input",
-                    name: "officeNumber",
-                    message: "Enter your office number:"
-                }
-                
-            ])
-
-        } else {
-            console.log("no role found")
-        }
-
-        //generate team html
-        fs.writeFile("team.html", htmlgen(role, name, github), function(err) {
-            
-            if (err) {
-              return console.log(err);
+function getRole() {
+    inquirer
+        .prompt([
+            {
+                type: "list",
+                name: "employeeRole",
+                message: "What is the new employee's role?",
+                choices: ['Engineer', 'Intern']
             }
-          
-            console.log("Success!");
-        
-          })
+        ])
+        .then(function (data) {
+            if (data.employeeRole === "Engineer") {
+                newEngineer();
+            }else{
+                newIntern();
+            }
+        });       
+}
 
-       })
+function newManager() {
+    inquirer
+        .prompt([
+            {
+                type: "list",
+                name: "employeeTitle",
+                message: "Please verify the employee's title:",
+                choices: ["Manager"]
+            },
+            {
+                type: "input",
+                name: "employeeName",
+                message: "What is the manager's name?"
+            },
+            {
+                type: "input",
+                name: "employeeID",
+                message: "What is the manager's ID number?"
+            },
+            {
+                type: "input",
+                name: "employeeEmail",
+                message: "What is the manager's email address?"
+            },
+            {
+                type: "input",
+                name: "managerOfficeNumber",
+                message: "What is the manager's office number?"
+            }
+        ])
+        .then(function(data) {
+            let manager = new Manager(data.employeeName, data.employeeID, data.employeeTitle, data.employeeEmail, data.managerOfficeNumber);
 
-    //    .then(function ({role, name, officeNumber}){
-    //        console.log(role, name, officeNumber);
-    //    })
-    };
+            employeeList.push(manager);
+            employeeList.forEach(function (data) {
+                addToFile("team.html", generateHTML.addManagerCard(data));
+                console.log(manager)
+                addAnother();
+            });
+            
+        });
+}
 
-       promptUser();
+function newEngineer() {
+    inquirer
+        .prompt([
+            {
+                type: "list",
+                name: "employeeTitle",
+                message: "Please verify the employee's title:",
+                choices: ["Engineer"]
+            },
+            {
+                type: "input",
+                name: "employeeName",
+                message: "Please enter the new engineer's name."
+            },
+            {
+                type: "input",
+                name: "employeeID",
+                message: "Please enter the new engineer's ID number."
+            },
+            {
+                type: "input",
+                name: "employeeEmail",
+                message: "Please enter the new engineer's ID email address."
+            },
+            {
+                type: "input",
+                name: "engineerGitHub",
+                message: "Please enter the new engineer's GitHub username."
+            }
+        ])
+        .then(function(data) {
+            let engineer = new Engineer(data.employeeName, data.employeeID, data.employeeTitle, data.employeeEmail, data.engineerGitHub);
+
+            employeeList.push(engineer);
+            console.log(engineer)
+            console.log(employeeList)
+            addAnother();
+        });
+}
+
+function newIntern() {
+    inquirer
+        .prompt([
+            {
+                type: "list",
+                name: "employeeTitle",
+                message: "Please verify the employee's title:",
+                choices: ["Intern"]
+            },
+            {
+                type: "input",
+                name: "employeeName",
+                message: "Please enter the new intern's name."
+            },
+            {
+                type: "input",
+                name: "employeeID",
+                message: "Please enter the new intern's ID number."
+            },
+            {
+                type: "input",
+                name: "employeeEmail",
+                message: "Please enter the new intern's ID email address."
+            },
+            {
+                type: "input",
+                name: "internSchool",
+                message: "Please enter the new intern's school."
+            }
+        ])
+        .then(function(data) {
+            let intern = new Intern(data.employeeName, data.employeeID, data.employeeTitle, data.employeeEmail, data.internSchool);
+
+            employeeList.push(intern);
+            console.log(employeeList);
+            console.log(intern)
+            addAnother();
+        });
+}
+
+function addAnother() {
+    inquirer
+    .prompt([
+        {
+            type: "list",
+            name: "addAnother",
+            message: "Would you like to add another employee?",
+            choices: ['Yes', 'No']
+        }
+    ])
+    .then(function(data) {
+        if(data.addAnother === "Yes") {
+            getRole();
+        }else{
+            
+            populateData();
+        }
+    });
+} 
+
+function createFile(html, data) {
+    fs.writeFile(html, data, function(err) {
+        if (err) {
+            return Error;
+        }
+    });
+}
+
+function addToFile (html, data) {
+    fs.appendFile(html, data, function(err) {
+        if (err) {
+            return Error
+        }
+    });
+}
+
+function populateData() {
+    console.log("populating data")
+    employeeList.forEach(function (data) {
+        switch (data.role) {
+            case "Intern":
+                addToFile("team.html", generateHTML.addInternCard(data));
+              break;
+            case "Engineer":
+                addToFile("team.html", generateHTML.addEngineerCard(data));
+              break;
+            default:
+              break;
+        }
+    });
+};
+
+function closeFile(){
+    addToFile("team.html", generateHTML.closeHTML());
+}
+
+
+profileGen();
