@@ -12,5 +12,5 @@ How to use this app:
 
 3.Install npm packages
 
-4.Run <node app.js> in the terminal to start the CLI operation
+4.Run "node app.js" in the terminal to start the CLI operation
   
