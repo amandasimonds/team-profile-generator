@@ -7,7 +7,10 @@ A new profile will overwrite the old one, every time you restart the app, so mak
 How to use this app:
 
 1.Clone the repo
+
 2.Open the code in the code editor of your choice
+
 3.Install npm packages
+
 4.Run <node app.js> in the terminal to start the CLI operation
   
